@@ -3,7 +3,7 @@ const User = require('../models/userModel');
 
 const authorize = async (req, res, next) => {
     try {
-        const token = req.cookies.secureToken
+        const token = req.cookies.secureToken || req.header('Authorization').replace('Bearer ', '')
         if (!token) return res.status(401).json({ error: "Unauthorized, access denied" })
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET)

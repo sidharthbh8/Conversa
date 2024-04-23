@@ -3,8 +3,8 @@ import toast from "react-hot-toast"
 import { useAuthContext } from "../context/AuthContext"
 
 const useLogin = () => {
-    const [loading, setLoading] = useState (false)
-    const {authUser, setAuthUser} = useAuthContext()
+    const [loading, setLoading] = useState(false)
+    const { authUser, setAuthUser } = useAuthContext()
 
     const login = async (username, password) => {
         if (!username || !password) {
@@ -17,8 +17,7 @@ const useLogin = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email: username, password })
-                // need to change backend code to accept username instead
+                body: JSON.stringify({ username, password })
             })
             const data = await res.json()
             if (data.error) {
@@ -26,9 +25,11 @@ const useLogin = () => {
             }
             setLoading(false)
             toast.success('Logged in successfully')
-
             localStorage.setItem('chat-user', JSON.stringify(data))
             setAuthUser(data)
+            const token = 'secureToken=' + encodeURIComponent(authUser.token);
+            console.log(data);
+            document.cookie = token;    
         } catch (error) {
             console.error(error.message)
         }

@@ -5,16 +5,21 @@ const generateToken = require('../utils/generateToken')
 
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const user = await User.findByCredentials(email, password)
-        if (!user) {
-            return res.status(400).json({ error: "Invalid email or password" })
-        }
-        generateToken(user._id, res)
-        res.status(200).json(`Welcome ${user.fullName}`)
-    } catch (e) {
-        res.status(500).json({ error: e.message })
-    }
+		const { username, password } = req.body;
+		const user = await User.findOne({ username });
+		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
+
+		if (!user || !isPasswordCorrect) {
+			return res.status(400).json({ error: "Invalid username or password" });
+		}
+
+		const token = generateToken(user._id, res);
+        await user.save();
+		res.status(200).json({...user, token: token});
+	} catch (error) {
+		console.log("Error in login controller", error.message);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
 
 }
 
