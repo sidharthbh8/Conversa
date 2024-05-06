@@ -5,6 +5,7 @@ import SignUp from './pages/signup/SignUp'
 import Home from './pages/home/Home'
 import './App.css'
 import { useAuthContext } from './context/AuthContext'
+import { useSocketContext } from './context/SocketContext'
 
 function App() {
   const { authUser } = useAuthContext()
@@ -21,4 +22,3 @@ function App() {
 }
 
 export default App
-// TimeStamp: 3:25:30

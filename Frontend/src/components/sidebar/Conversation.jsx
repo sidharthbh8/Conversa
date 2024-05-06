@@ -1,10 +1,13 @@
 import useConversation from "../../zustand/useConversation";
+import {useSocketContext} from "../../context/SocketContext";
 
 const Conversation = (props) => {
   const { email, fullName, gender, profilePic, username } = props.user;
 
   const { selectedConversation, setSelectedConversation } = useConversation();
   const isSelected = selectedConversation?._id === props.user._id;
+  const { onlineUser } = useSocketContext();
+  const isOnline = onlineUser.includes(props.user._id)
 
   const bufferArray = new Uint8Array(profilePic.data);
   const binaryString = String.fromCharCode(...bufferArray);
@@ -27,7 +30,7 @@ const Conversation = (props) => {
       `}
         onClick={handleClick}
       >
-        <div className="avatar online">
+        <div className={` avatar ${isOnline? 'online' : 'offline'}`}>
           <div className="w-12 rounded-full">
             <img
               src={`data:image/png;base64,${base64ImageData}`}

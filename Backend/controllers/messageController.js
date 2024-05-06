@@ -1,3 +1,4 @@
+const { getReceiverSocketId, io } = require("../socket/socket");
 const Conversation = require("../models/convoModel");
 const Message = require("../models/messageModel");
 
@@ -28,7 +29,13 @@ const sendMessage = async (req, res) =>{
         }
         await conversation.save();
         await newMessage.save();
-        res.status(200).json({message: newMessage});
+
+        const receiverSocketId = getReceiverSocketId(receiverId)
+        if(receiverSocketId)[
+            io.to(receiverSocketId).emit('getMessage', newMessage)
+        ]
+
+        res.status(200).json(newMessage);
     }catch(err){
         res.status(500).json({error: err.message});
     }
