@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors')
@@ -6,6 +7,8 @@ const messageRoutes = require('./routes/messageRoutes')
 const userRoutes = require('./routes/userRoutes')
 const cookieParser = require('cookie-parser');
 const { app, httpServer } = require('./socket/socket');
+
+const ___dirname = path.resolve()
 
 app.use(express.json())
 app.use(cors({
@@ -17,8 +20,10 @@ app.use(authRoutes)
 app.use(messageRoutes)
 app.use("/api/users", userRoutes)
 
-app.get('/', (req, res) => {
-    res.send('hello world')
+app.use(express.static(path.join(___dirname, '/frontend/dist')))
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(___dirname, 'frontend', 'dist', 'index.html'))
 })
 
 const port = process.env.PORT || 5000;
