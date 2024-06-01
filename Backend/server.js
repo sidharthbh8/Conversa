@@ -12,7 +12,7 @@ const ___dirname = path.resolve()
 
 app.use(express.json())
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://conversa-o1yj-hqj6t0pno-sidharthbh8s-projects.vercel.app/',
     credentials: true
 }))
 app.use(cookieParser())
