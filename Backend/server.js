@@ -12,7 +12,7 @@ const ___dirname = path.resolve()
 
 app.use(express.json())
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://conversa-vdvh.onrender.com',
     credentials: true
 }))
 app.use(cookieParser())
@@ -20,12 +20,11 @@ app.use(authRoutes)
 app.use(messageRoutes)
 app.use("/api/users", userRoutes)
 
-app.use(express.static(path.join(___dirname, 'frontend', 'dist')))
+app.use(express.static(path.join(process.cwd(), '/frontend/dist')))
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(___dirname, 'frontend', 'dist', 'index.html'))
+    res.sendFile(path.join(process.cwd(), '/frontend/dist/index.html'))
 })
-
 const port = process.env.PORT || 5000;
 
 httpServer.listen(port, ()=> {
