@@ -12,7 +12,7 @@ const ___dirname = path.resolve()
 
 app.use(express.json())
 app.use(cors({
-    origin: 'https://conversa-vdvh.onrender.com',
+    origin: 'http://localhost:5173',
     credentials: true
 }))
 app.use(cookieParser())
